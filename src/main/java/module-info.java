@@ -1,8 +1,11 @@
 module com.jsthijs.beroepsproduct02 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens com.jsthijs.beroepsproduct02 to javafx.fxml;
     exports com.jsthijs.beroepsproduct02;
+    exports com.jsthijs.beroepsproduct02.panes;
+    opens com.jsthijs.beroepsproduct02.panes to javafx.fxml;
 }
