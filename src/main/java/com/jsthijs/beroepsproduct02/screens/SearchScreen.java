@@ -65,7 +65,6 @@ public class SearchScreen implements Screen {
                 "ORDER BY items.ID DESC;";
 
         try {
-            System.out.println(query);
             ResultSet item = db.executeQuery(query);
             while(item.next()){
                 itemList.getChildren().add(renderItem(new Item(item), item.getString("tagName")));

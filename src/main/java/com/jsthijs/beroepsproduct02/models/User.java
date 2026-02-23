@@ -34,7 +34,14 @@ public class User {
         this.city = rs.getString("city");
     }
 
-    public void DeleteItem(Item item) {
+    public void saveItem(String name, String summary, String image, String maker, Integer releaseYear, String type) {
+    }
+
+    public void saveItem(Item item) {
+
+    }
+
+    public void deleteItem(Item item) {
         if (this.id == item.getUserId()) {
 
         }

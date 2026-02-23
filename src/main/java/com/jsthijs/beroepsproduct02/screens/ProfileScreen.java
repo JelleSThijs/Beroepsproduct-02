@@ -1,7 +1,6 @@
 package com.jsthijs.beroepsproduct02.screens;
 
 import com.jsthijs.beroepsproduct02.models.Item;
-import com.jsthijs.beroepsproduct02.models.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,14 +10,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.sql.ResultSet;
-import java.util.concurrent.Flow;
 
 import static com.jsthijs.beroepsproduct02.Application.*;
 
@@ -29,9 +25,6 @@ public class ProfileScreen implements Screen {
 
     public ProfileScreen(int userId) {
         this.userId = userId;
-
-        System.out.println(this.userId);
-        System.out.println(user.getId());
 
         FlowPane root = new FlowPane();
         this.scene = new Scene(root, window_size[0], window_size[1]);
@@ -45,15 +38,16 @@ public class ProfileScreen implements Screen {
 
             Button deleteButton = new Button("Verwijder");
             deleteButton.setOnAction(e -> {
-                user.DeleteItem((Item) this.toggleGroup.getSelectedToggle().getUserData());
+                user.deleteItem((Item) this.toggleGroup.getSelectedToggle().getUserData());
             });
 
             Button editButton = new Button("Edit");
             editButton.setOnAction(e -> {
-                new EditScreen((Item) this.toggleGroup.getSelectedToggle().getUserData());
+                NavigateTo(new EditScreen((Item) this.toggleGroup.getSelectedToggle().getUserData()));
             });
 
             Button newButton = new Button("Nieuw");
+            newButton.setOnAction(e -> { NavigateTo(new NewScreen()); });
 
             crudPane.getChildren().addAll(deleteButton, editButton, newButton);
             root.getChildren().add(crudPane);
@@ -108,6 +102,7 @@ public class ProfileScreen implements Screen {
             RadioButton rb = new RadioButton("Selecteer item");
             rb.setUserData(item);
             rb.setToggleGroup(this.toggleGroup);
+            itemPane.getChildren().add(rb);
         }
 
 

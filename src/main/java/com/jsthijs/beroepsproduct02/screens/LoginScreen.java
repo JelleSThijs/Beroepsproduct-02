@@ -70,7 +70,6 @@ public class LoginScreen implements Screen{
             ResultSet rs = db.executeQuery(query);
             while (rs.next()) {
                 user = new User(rs);
-                System.out.println(user);
                 NavigateTo(new HomeScreen());
             }
 
