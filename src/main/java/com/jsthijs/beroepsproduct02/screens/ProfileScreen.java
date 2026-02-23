@@ -3,46 +3,40 @@ package com.jsthijs.beroepsproduct02.screens;
 import com.jsthijs.beroepsproduct02.models.Item;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
 import java.sql.ResultSet;
 
 import static com.jsthijs.beroepsproduct02.Application.*;
 
-public class HomeScreen implements Screen{
+public class ProfileScreen implements Screen {
     private final Scene scene;
 
-    public HomeScreen() {
+    public ProfileScreen(int userId) {
         FlowPane root = new FlowPane();
         this.scene = new Scene(root, window_size[0], window_size[1]);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPannable(true);
 
         VBox items = new VBox();
         items.setPadding(new Insets(0, 120, 0, 120));
         items.setSpacing(8);
+        items.getChildren().add(itemList(userId));
 
-        root.getChildren().addAll(header, items);
+        scrollPane.setContent(items);
+        root.getChildren().addAll(header, scrollPane);
 
-
-
-        FlowPane newBooks = new FlowPane(new Text("Nieuw toegevoegde boeken"));
-        newBooks.setPrefSize(1200, 32);
-        newBooks.setStyle("-fx-background-color: green");
-
-        items.getChildren().addAll(newBooks, itemList("Book", 6));
-
-        FlowPane newFilms = new FlowPane(new Text("Nieuw toegevoegde films"));
-        newFilms.setPrefSize(1200, 32);
-        newFilms.setStyle("-fx-background-color: green");
-
-        items.getChildren().addAll(newFilms, itemList("Film", 6));
 
 
     }
 
-    private Pane itemList(String type, Integer limit) {
+    private Pane itemList(Integer userId) {
         FlowPane itemList = new FlowPane();
         itemList.setMinSize(1200, 300);
         itemList.setPrefSize(1200, 300);
@@ -50,20 +44,18 @@ public class HomeScreen implements Screen{
         itemList.setVgap(10);
 
         String query = "SELECT items.*, tags.name as tagName FROM items\n" +
-                 "JOIN itemtags ON items.ID = itemtags.itemId\n" +
-                 "JOIN tags ON tagId = tags.ID \n" +
-                 "WHERE TYPE ='" + type + "'\n" +
-                 "GROUP BY items.ID\n" +
-                 "ORDER BY items.ID DESC LIMIT " + limit + ";";
+                "JOIN itemtags ON items.ID = itemtags.itemId\n" +
+                "JOIN tags ON tagId = tags.ID \n" +
+                "WHERE userId ='" + userId + "'\n" +
+                "GROUP BY items.ID\n" +
+                "ORDER BY items.ID DESC;";
 
         try {
             ResultSet item = db.executeQuery(query);
             while(item.next()){
                 itemList.getChildren().add(renderItem(new Item(item), item.getString("tagName")));
             }
-        } catch (Exception ex) {
-            System.err.println("Error while executing query: " + ex.getMessage());
-        }
+        } catch (Exception ex) { System.err.println("Error while executing query: " + ex.getMessage()); }
 
         return itemList;
     }
@@ -105,7 +97,6 @@ public class HomeScreen implements Screen{
     }
 
     public String getTitle() {
-        return "Home Screen";
+        return "User Profile";
     }
-
 }

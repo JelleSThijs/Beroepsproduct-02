@@ -1,12 +1,17 @@
 package com.jsthijs.beroepsproduct02.panes;
 
 import com.jsthijs.beroepsproduct02.Application;
+import java.sql.ResultSet;
+
+import com.jsthijs.beroepsproduct02.screens.SearchScreen;
 import javafx.geometry.Pos;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+
+import java.sql.SQLException;
 
 import static com.jsthijs.beroepsproduct02.Application.*;
 
@@ -51,7 +56,13 @@ public class HeaderPane {
             ChoiceBox filter1 = new ChoiceBox();
             filter1.setPrefSize(156, 40);
             filter1.setValue("Genre");
-            filter1.getItems().addAll();
+            try {
+                ResultSet rs = db.executeQuery("SELECT name FROM tags;");
+                while(rs.next()) { filter1.getItems().add(rs.getString("name")); }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
 
             // filter 2
@@ -63,14 +74,26 @@ public class HeaderPane {
             ChoiceBox filter3 = new ChoiceBox();
             filter3.setPrefSize(156, 40);
             filter3.setValue("Type");
-            filter3.getItems().addAll();
+            filter3.getItems().addAll("boek", "film");
 
             // zoekknop
             ImageView searchIcon = new ImageView(Application.class.getResource("icons/search-48.png").toString());
             searchIcon.setPreserveRatio(true);
             searchIcon.setFitHeight(48);
 
-        searchBox.getChildren().addAll(searchText, filter1, filter2, filter3, searchIcon);
+            FlowPane searchIconPane = new FlowPane(searchIcon);
+            searchIconPane.setAlignment(Pos.CENTER);
+            searchIconPane.setPrefSize(48,48);
+            searchIconPane.setOnMouseClicked(event -> {
+                NavigateTo(new SearchScreen(
+                    searchText.getText(),
+                    filter1.getValue().toString(),
+                    filter2.getText(),
+                    filter3.getValue().toString()
+                ));
+            });
+
+        searchBox.getChildren().addAll(searchText, filter1, filter2, filter3, searchIconPane);
 
         // gebruikers account knop
         FlowPane userButton = new FlowPane();
