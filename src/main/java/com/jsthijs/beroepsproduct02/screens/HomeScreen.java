@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 
 import static com.jsthijs.beroepsproduct02.Application.*;
 
-public class HomeScreen implements Screen{
+public class HomeScreen implements Screen {
     private final Scene scene;
 
     public HomeScreen() {

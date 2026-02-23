@@ -3,6 +3,9 @@ package com.jsthijs.beroepsproduct02.panes;
 import com.jsthijs.beroepsproduct02.Application;
 import java.sql.ResultSet;
 
+import com.jsthijs.beroepsproduct02.screens.HomeScreen;
+import com.jsthijs.beroepsproduct02.screens.LoginScreen;
+import com.jsthijs.beroepsproduct02.screens.ProfileScreen;
 import com.jsthijs.beroepsproduct02.screens.SearchScreen;
 import javafx.geometry.Pos;
 import javafx.scene.control.ChoiceBox;
@@ -32,6 +35,7 @@ public class HeaderPane {
         homeButton.setPrefSize(72, 72);
         homeButton.setStyle("-fx-background-color: white;");
         homeButton.setAlignment(Pos.CENTER);
+        homeButton.setOnMouseClicked(e -> { NavigateTo(new HomeScreen()); });
 
         ImageView homeIcon = new ImageView(Application.class.getResource("icons/home-64.png").toString());
         homeIcon.setPreserveRatio(true);
@@ -100,6 +104,10 @@ public class HeaderPane {
         userButton.setPrefSize(72, 72);
         userButton.setStyle("-fx-background-color: white;");
         userButton.setAlignment(Pos.CENTER);
+        userButton.setOnMouseClicked(e -> {
+            if(user != null) { NavigateTo(new ProfileScreen(user.getId())); }
+            else { NavigateTo(new LoginScreen()); }
+        });
 
         ImageView userIcon = new ImageView(Application.class.getResource("icons/user-64.png").toString());
         userIcon.setPreserveRatio(true);

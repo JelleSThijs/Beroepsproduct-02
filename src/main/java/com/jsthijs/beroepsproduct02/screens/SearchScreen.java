@@ -112,6 +112,6 @@ public class SearchScreen implements Screen {
     }
 
     public String getTitle() {
-        return "User Profile";
+        return "Search Results";
     }
 }
